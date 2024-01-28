@@ -3,6 +3,6 @@ import 'package:flutter/material.dart';
 import 'services/app_controller.dart';
 
 Future<void> main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const KCalFront());
 }

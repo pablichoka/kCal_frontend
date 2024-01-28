@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:kcal_control_frontend/widgets/app_bar.dart';
 import 'package:kcal_control_frontend/services/api_service.dart' as api;
@@ -12,7 +11,7 @@ class LogoutTest extends StatefulWidget {
 }
 
 class _LogoutTestState extends State<LogoutTest> {
-  Map<String, dynamic> _response = {"":""};
+  Map<String, dynamic> _response = {"": ""};
   bool _isLoading = true;
   late final BuildContext? _navigationContext;
 
@@ -24,7 +23,8 @@ class _LogoutTestState extends State<LogoutTest> {
 
   void _fetchData() async {
     try {
-      final response = await api.ApiService.instance.getNoAuth("/get-data/${api.ApiService.instance.id}");
+      final response = await api.ApiService.instance
+          .getAuth("/get-data/${api.ApiService.instance.id}");
       setState(() {
         _response = response;
         print(_response);
@@ -36,13 +36,13 @@ class _LogoutTestState extends State<LogoutTest> {
   }
 
   Future<bool> _logout() async {
-      try {
-        _navigationContext = context;
-        return await api.ApiService.instance.logout();
-      } catch (e) {
-        throw ('Error: $e');
-      }
+    try {
+      _navigationContext = context;
+      return await api.ApiService.instance.logout();
+    } catch (e) {
+      throw ('Error: $e');
     }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +51,13 @@ class _LogoutTestState extends State<LogoutTest> {
       body: Column(
         children: [
           _isLoading
-              ? const Center(
-                  child:
-                      CircularProgressIndicator())
+              ? const Center(child: CircularProgressIndicator())
               : Center(child: Text(_response['username'])),
           ElevatedButton(
             onPressed: () async {
               if (await _logout()) {
-                Navigator.pushReplacement(_navigationContext!, MaterialPageRoute(builder: (ctx) => const WebIndex()));
+                Navigator.pushReplacement(_navigationContext!,
+                    MaterialPageRoute(builder: (ctx) => const WebIndex()));
               } else {
                 ScaffoldMessenger.of(_navigationContext!).showSnackBar(
                   const SnackBar(
@@ -67,7 +66,8 @@ class _LogoutTestState extends State<LogoutTest> {
                 );
               }
             },
-            child: Text('Logout', style: Theme.of(context).textTheme.headlineSmall),
+            child: Text('Logout',
+                style: Theme.of(context).textTheme.headlineSmall),
           ),
         ],
       ),
