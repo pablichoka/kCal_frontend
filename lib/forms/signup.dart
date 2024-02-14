@@ -13,9 +13,10 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final String title = "kCal Control";
-  late final BuildContext? _navigationContext;
+  BuildContext? _navigationContext;
   var newUser = User(
       username: '',
       firstName: '',
@@ -29,7 +30,6 @@ class _SignUpPageState extends State<SignUpPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        _navigationContext = context;
         return await api.ApiService.instance.signup(newUser);
       } catch (e) {
         print('Error: $e');
@@ -40,6 +40,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    _navigationContext = context;
     return Scaffold(
       appBar: DAppBar(
         title: title,

@@ -14,7 +14,7 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final String title = "kCal Control";
-  late final BuildContext? _navigationContext;
+  BuildContext? _navigationContext;
   String _username = '';
   String _password = '';
 
@@ -22,7 +22,6 @@ class LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        _navigationContext = context;
         return await api.ApiService.instance.login(_username, _password);
       } catch (e) {
         print('Error: $e');
@@ -33,6 +32,7 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    _navigationContext = context;
     return Scaffold(
       appBar: DAppBar(title: title, actions: const [], returnable: true),
       body: Form(
