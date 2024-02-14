@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kcal_control_frontend/services/api_service.dart' as api;
 import 'package:kcal_control_frontend/pages/logout_test.dart';
 
+import '../pages/dashboard.dart';
 import '../widgets/app_bar.dart';
 
 class LoginPage extends StatefulWidget {
@@ -73,7 +74,7 @@ class LoginPageState extends State<LoginPage> {
                     Navigator.pushReplacement(
                         _navigationContext!,
                         MaterialPageRoute(
-                            builder: (ctx) => const LogoutTest()));
+                            builder: (ctx) => const Dashboard()));
                   } else {
                     ScaffoldMessenger.of(_navigationContext!).showSnackBar(
                       const SnackBar(

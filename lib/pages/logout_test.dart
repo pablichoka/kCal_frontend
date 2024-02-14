@@ -13,7 +13,7 @@ class LogoutTest extends StatefulWidget {
 class _LogoutTestState extends State<LogoutTest> {
   Map<String, dynamic> _response = {"": ""};
   bool _isLoading = true;
-  late final BuildContext? _navigationContext;
+  BuildContext? _navigationContext;
 
   @override
   void initState() {
@@ -37,7 +37,6 @@ class _LogoutTestState extends State<LogoutTest> {
 
   Future<bool> _logout() async {
     try {
-      _navigationContext = context;
       return await api.ApiService.instance.logout();
     } catch (e) {
       throw ('Error: $e');
@@ -46,6 +45,7 @@ class _LogoutTestState extends State<LogoutTest> {
 
   @override
   Widget build(BuildContext context) {
+    _navigationContext = context;
     return Scaffold(
       appBar: const DAppBar(title: "logout", returnable: false),
       body: Column(
