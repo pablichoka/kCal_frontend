@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kcal_control_frontend/forms/login.dart';
-import 'package:kcal_control_frontend/forms/signup.dart';
 import 'package:kcal_control_frontend/pages/homePage.dart';
+import 'package:kcal_control_frontend/pages/menu_builder.dart';
+import 'package:kcal_control_frontend/pages/menu_list.dart';
+import 'package:kcal_control_frontend/pages/profile.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -14,6 +15,7 @@ class Dashboard extends StatefulWidget {
 
 class _Dashboard extends State<Dashboard> {
   Widget _currentScreen = const HomePage();
+
   void _changeScreen(Widget screen) {
     setState(() {
       _currentScreen = screen;
@@ -42,23 +44,35 @@ class _Dashboard extends State<Dashboard> {
         ),
       ),
       body: _currentScreen,
-      bottomNavigationBar:  BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
         elevation: 10,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Pantalla 1',
+            label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Pantalla 2',
+            icon: Icon(Icons.account_tree_sharp),
+            label: 'Menu builder',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.food_bank),
+            label: 'Menu list',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_outlined),
+            label: 'Profile',
           ),
         ],
         onTap: (index) {
           if (index == 0) {
             _changeScreen(const HomePage());
+          } else if (index == 1) {
+            _changeScreen(const MenuBuilder());
+          } else if (index == 2) {
+            _changeScreen(const MenuList());
           } else {
-            _changeScreen(const LoginPage());
+            _changeScreen(const ProfilePage());
           }
         },
       ),
