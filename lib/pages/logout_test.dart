@@ -3,6 +3,8 @@ import 'package:kcal_control_frontend/widgets/app_bar.dart';
 import 'package:kcal_control_frontend/services/api_service.dart' as api;
 import 'package:kcal_control_frontend/pages/index.dart';
 
+import '../main.dart';
+
 class LogoutTest extends StatefulWidget {
   const LogoutTest({super.key});
 
@@ -24,7 +26,7 @@ class _LogoutTestState extends State<LogoutTest> {
   void _fetchData() async {
     try {
       final response = await api.ApiService.instance
-          .getAuth("/get-data/${api.ApiService.instance.id}");
+          .getAuth("/get-data/${api.ApiService.instance.id}", storage.read(key: 'accessToken') as String);
       setState(() {
         _response = response;
         print(_response);
@@ -37,7 +39,7 @@ class _LogoutTestState extends State<LogoutTest> {
 
   Future<bool> _logout() async {
     try {
-      return await api.ApiService.instance.logout();
+      return await api.ApiService.instance.logout(storage.read(key: 'accessToken'));
     } catch (e) {
       throw ('Error: $e');
     }

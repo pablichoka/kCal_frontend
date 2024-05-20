@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kcal_control_frontend/services/api_service.dart' as api;
 import 'package:kcal_control_frontend/pages/logout_test.dart';
 
@@ -15,15 +16,96 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final String title = "kCal Control";
+  final FocusScopeNode _focusNode = FocusScopeNode();
   BuildContext? _navigationContext;
   String _username = '';
   String _password = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.requestFocus();
+    _focusNode.addListener(_handleKeyEvent);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_handleKeyEvent);
+    RawKeyboard.instance.removeListener(_handleRawKeyEvent);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _navigationContext = context;
+    return Scaffold(
+        appBar: DAppBar(title: title, actions: const [], returnable: true),
+        body: FocusScope(
+          node: _focusNode,
+          child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    decoration: const InputDecoration(labelText: 'Username'),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your username';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _username = value!;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(labelText: 'Password'),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _password = value!;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await _login();
+                    },
+                    child: const Text('Log in'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
+  }
 
   Future<bool> _login() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        return await api.ApiService.instance.login(_username, _password);
+        bool loginSuccessful =
+        await api.ApiService.instance.login(_username, _password);
+        if (loginSuccessful) {
+          Navigator.pushReplacement(
+            _navigationContext!,
+            MaterialPageRoute(builder: (ctx) => const Dashboard()),
+          );
+        } else {
+          ScaffoldMessenger.of(_navigationContext!).showSnackBar(
+            const SnackBar(
+              content: Text('There was an error signing in.'),
+            ),
+          );
+        }
+        return loginSuccessful;
       } catch (e) {
         print('Error: $e');
       }
@@ -31,64 +113,17 @@ class LoginPageState extends State<LoginPage> {
     return false;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    _navigationContext = context;
-    return Scaffold(
-      appBar: DAppBar(title: title, actions: const [], returnable: true),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Username'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your username';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _username = value!;
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _password = value!;
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  if (await _login()) {
-                    Navigator.pushReplacement(
-                        _navigationContext!,
-                        MaterialPageRoute(
-                            builder: (ctx) => const Dashboard()));
-                  } else {
-                    ScaffoldMessenger.of(_navigationContext!).showSnackBar(
-                      const SnackBar(
-                        content: Text('There was an error signing in.'),
-                      ),
-                    );
-                  }
-                },
-                child: const Text('Log in'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  void _handleKeyEvent() {
+    if (_focusNode.hasFocus) {
+      RawKeyboard.instance.addListener(_handleRawKeyEvent);
+    } else {
+      RawKeyboard.instance.removeListener(_handleRawKeyEvent);
+    }
+  }
+
+  void _handleRawKeyEvent(RawKeyEvent event) {
+    if (event is RawKeyDownEvent && event.logicalKey == LogicalKeyboardKey.enter) {
+      _login();
+    }
   }
 }

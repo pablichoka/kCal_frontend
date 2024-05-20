@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:kcal_control_frontend/main.dart';
 import 'package:kcal_control_frontend/models/user.dart';
 
 class ApiService {
@@ -15,8 +16,6 @@ class ApiService {
   }
 
   final String _baseUrl = 'http://localhost:8081';
-  late String? _accessToken;
-  late String? _refreshToken;
   late String? id;
   late String? _role;
 
@@ -26,8 +25,12 @@ class ApiService {
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
         body: json.encode({'username': username, 'password': password}));
     if (response.statusCode == 200) {
-      _accessToken = (jsonDecode(response.body)['accessToken']);
-      _refreshToken = (jsonDecode(response.body)['refreshToken']);
+      await storage.write(
+          key: 'accessToken',
+          value: (jsonDecode(response.body)['accessToken']));
+      await storage.write(
+          key: 'refreshToken',
+          value: (jsonDecode(response.body)['refreshToken']));
       id = jsonDecode(response.body)['id'];
       _role = jsonDecode(response.body)['roleName'];
       return true;
@@ -51,14 +54,16 @@ class ApiService {
     }
   }
 
-  Future<bool> logout() async {
+  Future<bool> logout(Future<String?> accessToken) async {
     Uri uri = Uri.parse('$_baseUrl/logout');
+    final _accessToken = await accessToken;
     final response = await http.post(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $_accessToken'
     });
     if (response.statusCode == 200) {
-      _accessToken = null;
+      print("Me he deslogueado con $_accessToken");
+      await storage.delete(key: 'accessToken');
       id = null;
       _role = null;
       return true;
@@ -67,11 +72,11 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> getAuth(String path) async {
+  Future<Map<String, dynamic>> getAuth(String path, String accessToken) async {
     Uri uri = Uri.parse('$_baseUrl$path');
     final response = await http.get(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $_accessToken'
+      'Authorization': 'Bearer $accessToken'
     });
     if (response.statusCode == 200) {
       print(response.body);
@@ -99,10 +104,11 @@ class ApiService {
   Future<Map<String, dynamic>> post(
       String path, Map<String, dynamic> body) async {
     Uri uri = Uri.parse('$_baseUrl$path');
+    var accessToken = await storage.read(key: 'accessToken');
     final response = await http.post(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $_accessToken'
+          'Authorization': 'Bearer $accessToken'
         },
         body: jsonEncode(body));
     if (response.statusCode == 200) {
@@ -115,12 +121,12 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>> put(
-      String path, Map<String, dynamic> body) async {
+      String path, Map<String, dynamic> body, String accessToken) async {
     Uri uri = Uri.parse('$_baseUrl$path');
     final response = await http.put(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $_accessToken'
+          'Authorization': 'Bearer $accessToken'
         },
         body: jsonEncode(body));
     if (response.statusCode == 200) {
@@ -133,12 +139,12 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>> delete(
-      String path, Map<String, dynamic> body) async {
+      String path, Map<String, dynamic> body, String accessToken) async {
     Uri uri = Uri.parse('$_baseUrl$path');
     final response = await http.delete(uri,
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $_accessToken'
+          'Authorization': 'Bearer $accessToken'
         },
         body: jsonEncode(body));
     if (response.statusCode == 200) {
