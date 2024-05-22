@@ -62,7 +62,6 @@ class ApiService {
       'Authorization': 'Bearer $_accessToken'
     });
     if (response.statusCode == 200) {
-      print("Me he deslogueado con $_accessToken");
       await storage.delete(key: 'accessToken');
       id = null;
       _role = null;

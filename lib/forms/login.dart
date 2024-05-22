@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kcal_control_frontend/services/api_service.dart' as api;
-import 'package:kcal_control_frontend/pages/logout_test.dart';
 
 import '../pages/dashboard.dart';
 import '../widgets/app_bar.dart';

@@ -19,7 +19,7 @@ class ProfilePage extends StatelessWidget {
                     "Richie Lorie",
                     style: Theme.of(context)
                         .textTheme
-                        .headline6
+                        .headlineMedium
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
@@ -100,7 +100,7 @@ class _ProfileInfoRow extends StatelessWidget {
       ),
       Text(
         item.title,
-        style: Theme.of(context).textTheme.caption,
+        style: Theme.of(context).textTheme.bodySmall,
       )
     ],
   );

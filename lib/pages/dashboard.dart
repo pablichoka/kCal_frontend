@@ -4,12 +4,14 @@ import 'package:kcal_control_frontend/pages/homePage.dart';
 import 'package:kcal_control_frontend/pages/menu_builder.dart';
 import 'package:kcal_control_frontend/pages/menu_list.dart';
 import 'package:kcal_control_frontend/pages/profile.dart';
+import 'package:provider/provider.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:kcal_control_frontend/services/api_service.dart' as api;
 
 import '../main.dart';
+import '../services/theme_provider.dart';
 import '../themes/sidebar_theme.dart';
-
+import '../themes/theme_colors.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -22,8 +24,8 @@ class Dashboard extends StatefulWidget {
 
 class _Dashboard extends State<Dashboard> {
   Widget _currentScreen = const ProfilePage();
-  final SidebarXController _sidebarController = SidebarXController(selectedIndex: 0, extended: false);
-  final Future<String?> _accessToken = storage.read(key: 'accessToken');
+  final SidebarXController _sidebarController =
+      SidebarXController(selectedIndex: 0);
 
   void _changeScreen(int index) {
     Widget screen;
@@ -55,30 +57,33 @@ class _Dashboard extends State<Dashboard> {
     return Scaffold(
       body: Row(children: [
         SidebarX(
-          theme: collapsedTheme(MediaQuery.of(context).size.width * 0.05),
-          extendedTheme: extendedTheme(MediaQuery.of(context).size.width * 0.125),
-          footerDivider: ActionChip(
-            label: const Text('Log out'),
+          theme: collapsedTheme(MediaQuery.of(context).size.width * 0.05, context),
+          extendedTheme:
+              extendedTheme(MediaQuery.of(context).size.width * 0.125, context),
+          footerDivider: IconButton(
             onPressed: () async {
               Navigator.of(context).pop();
-              await api.ApiService.instance.logout(_accessToken);
+              await api.ApiService.instance
+                  .logout(storage.read(key: 'accessToken'));
             },
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(Colors.transparent),
+            ),
+            icon: const Icon(Icons.logout),
+            iconSize: 40,
+            padding: const EdgeInsets.only(bottom: 40),
+            hoverColor: lightGreen,
           ),
           headerBuilder: (context, extended) {
-            return SizedBox(
-              height: 100,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Image.asset('assets/images/avatar.png'),
-              ),
-            );
+            return iconHeader;
           },
           controller: _sidebarController,
           items: [
             SidebarXItem(
-                icon: Icons.home,
-                label: 'Home',
-                onTap: () => _changeScreen(0)),
+              icon: Icons.home,
+              label: 'Home',
+              onTap: () => _changeScreen(0),
+            ),
             SidebarXItem(
                 icon: Icons.account_tree_sharp,
                 label: 'Menu builder',
@@ -92,64 +97,24 @@ class _Dashboard extends State<Dashboard> {
                 label: 'Profile',
                 onTap: () => _changeScreen(3)),
           ],
-          animationDuration: Durations.long1,
+          animationDuration: Durations.medium4,
         ),
-        Expanded(child: Center(
+        Expanded(
+            child: Center(
           child: _currentScreen,
-        ))
+        )),
       ]),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
+        },
+        backgroundColor: darkGreen,
+        child: Provider.of<ThemeNotifier>(context).themeMode ==
+                ThemeMode.light
+            ? const Icon(Icons.dark_mode)
+            : const Icon(Icons.light_mode),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
-
-// appBar: AppBar(
-//   automaticallyImplyLeading: false,
-//   toolbarHeight: 80,
-//   elevation: 0,
-//   centerTitle: true,
-//   title: Text(widget.title,
-//       style: Theme.of(context).textTheme.headlineLarge),
-//   backgroundColor: Colors.transparent,
-//   flexibleSpace: Container(
-//     decoration: const BoxDecoration(
-//       gradient: LinearGradient(
-//         begin: Alignment.topRight,
-//         end: Alignment.bottomLeft,
-//         colors: [Colors.blueAccent, Colors.grey, Colors.teal],
-//       ),
-//     ),
-//   ),
-// ),
-// body: _currentScreen,
-// bottomNavigationBar: BottomNavigationBar(
-//   elevation: 10,
-//   items: const [
-//     BottomNavigationBarItem(
-//       icon: Icon(Icons.home),
-//       label: 'Home',
-//     ),
-//     BottomNavigationBarItem(
-//       icon: Icon(Icons.account_tree_sharp),
-//       label: 'Menu builder',
-//     ),
-//     BottomNavigationBarItem(
-//       icon: Icon(Icons.food_bank),
-//       label: 'Menu list',
-//     ),
-//     BottomNavigationBarItem(
-//       icon: Icon(Icons.account_circle_outlined),
-//       label: 'Profile',
-//     ),
-//   ],
-//   onTap: (index) {
-//     if (index == 0) {
-//       _changeScreen(const HomePage());
-//     } else if (index == 1) {
-//       _changeScreen(const MenuBuilder());
-//     } else if (index == 2) {
-//       _changeScreen(const MenuList());
-//     } else {
-//       _changeScreen(const ProfilePage());
-//     }
-//   },
-// ),
