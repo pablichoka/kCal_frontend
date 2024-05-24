@@ -16,7 +16,7 @@ class KCalFront extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     return MaterialApp(
-      home: kIsWeb ? const Dashboard() : const Dashboard(),
+      home: kIsWeb ? const WebIndex() : const WebIndex(),
       theme: _kCalControlLightTheme,
       darkTheme: _kCalControlDarkTheme,
       themeMode: themeNotifier.themeMode,

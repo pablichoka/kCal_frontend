@@ -5,7 +5,8 @@ class DAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final bool returnable;
 
-  const DAppBar({super.key, required this.title, this.actions, required this.returnable});
+  const DAppBar(
+      {super.key, required this.title, this.actions, required this.returnable});
 
   @override
   Widget build(BuildContext context) {
@@ -14,16 +15,15 @@ class DAppBar extends StatelessWidget implements PreferredSizeWidget {
         automaticallyImplyLeading: returnable ? true : false,
         toolbarHeight: 80,
         elevation: 0,
+        backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
         actions: actions,
-        flexibleSpace: Container(
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [Colors.blueAccent, Colors.grey, Colors.teal],
-        ))));
+        // flexibleSpace: Container(
+        //     decoration: BoxDecoration(
+        //   color: Theme.of(context).primaryColor,
+        );
   }
+
   @override
   Size get preferredSize => const Size.fromHeight(80);
 }

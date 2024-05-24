@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:kcal_control_frontend/forms/login.dart';
 import 'package:kcal_control_frontend/forms/signup.dart';
 import 'package:kcal_control_frontend/widgets/app_bar.dart';
+import 'package:provider/provider.dart';
 
 import '../services/api_service.dart' as api;
+import '../services/theme_provider.dart';
+import '../themes/theme_data.dart';
 
 class WebIndex extends StatefulWidget {
   const WebIndex({super.key});
@@ -81,6 +84,9 @@ class _WebIndexState extends State<WebIndex> {
               height: 40,
             )
           ],
-        ));
+        ),
+      floatingActionButton: themeSelectorButton(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
   }
 }

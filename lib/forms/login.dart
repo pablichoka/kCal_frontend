@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:kcal_control_frontend/services/api_service.dart' as api;
 
 import '../pages/dashboard.dart';
+import '../themes/theme_data.dart';
 import '../widgets/app_bar.dart';
 
 class LoginPage extends StatefulWidget {
@@ -38,52 +39,55 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     _navigationContext = context;
     return Scaffold(
-        appBar: DAppBar(title: title, actions: const [], returnable: true),
-        body: FocusScope(
-          node: _focusNode,
-          child: Form(
-            key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    decoration: const InputDecoration(labelText: 'Username'),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your username';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _username = value!;
-                    },
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(labelText: 'Password'),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _password = value!;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await _login();
-                    },
-                    child: const Text('Log in'),
-                  ),
-                ],
-              ),
+      appBar: DAppBar(title: title, actions: const [], returnable: true),
+      body: FocusScope(
+        node: _focusNode,
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Username'),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter your username';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _username = value!;
+                  },
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _password = value!;
+                  },
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    await _login();
+                  },
+                  child: const Text('Log in'),
+                ),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+      floatingActionButton: themeSelectorButton(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
   }
 
   Future<bool> _login() async {
@@ -91,7 +95,7 @@ class LoginPageState extends State<LoginPage> {
       _formKey.currentState!.save();
       try {
         bool loginSuccessful =
-        await api.ApiService.instance.login(_username, _password);
+            await api.ApiService.instance.login(_username, _password);
         if (loginSuccessful) {
           Navigator.pushReplacement(
             _navigationContext!,
@@ -121,7 +125,8 @@ class LoginPageState extends State<LoginPage> {
   }
 
   void _handleRawKeyEvent(RawKeyEvent event) {
-    if (event is RawKeyDownEvent && event.logicalKey == LogicalKeyboardKey.enter) {
+    if (event is RawKeyDownEvent &&
+        event.logicalKey == LogicalKeyboardKey.enter) {
       _login();
     }
   }

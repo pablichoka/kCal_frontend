@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kcal_control_frontend/models/user.dart';
 import 'package:kcal_control_frontend/services/api_service.dart' as api;
 
+import '../themes/theme_data.dart';
 import '../widgets/app_bar.dart';
 import 'package:kcal_control_frontend/pages/index.dart';
 
@@ -13,7 +14,6 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final String title = "kCal Control";
   BuildContext? _navigationContext;
@@ -156,6 +156,8 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ),
       ),
+      floatingActionButton: themeSelectorButton(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

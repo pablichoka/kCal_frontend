@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_theme_builder/material_theme_builder.dart';
+import 'package:provider/provider.dart';
+
+import '../services/theme_provider.dart';
 
 const lightGreen = Color.fromARGB(255, 164, 194, 165);
 const dark = Color.fromARGB(255, 74, 74, 72);
@@ -16,13 +19,13 @@ ThemeData buildKCalControlLightTheme() {
     useMaterial3: true,
     brightness: Brightness.light,
     colorScheme: MaterialThemeBuilder(
-      brightness: Brightness.light,
-      primary: lightGreen,
-      secondary: dark,
-      tertiary: hoverColor,
-      error: errorOnLight,
-      neutral: white
-    ).toScheme(),
+            brightness: Brightness.light,
+            primary: lightGreen,
+            secondary: dark,
+            tertiary: hoverColor,
+            error: errorOnLight,
+            neutral: white)
+        .toScheme(),
     textTheme: buildKCalControlTextTheme(lightTheme.textTheme),
   );
 }
@@ -33,13 +36,13 @@ ThemeData buildKCalControlDarkTheme() {
     useMaterial3: true,
     brightness: Brightness.dark,
     colorScheme: MaterialThemeBuilder(
-      brightness: Brightness.dark,
-      primary: lightGreen,
-      secondary: mintGreen,
-      tertiary: hoverColor,
-      error: errorOnDark,
-      neutral: dark
-  ).toScheme(),
+            brightness: Brightness.dark,
+            primary: lightGreen,
+            secondary: mintGreen,
+            tertiary: hoverColor,
+            error: errorOnDark,
+            neutral: dark)
+        .toScheme(),
     textTheme: buildKCalControlTextTheme(darkTheme.textTheme),
   );
 }
@@ -59,4 +62,15 @@ TextTheme buildKCalControlTextTheme(TextTheme base) {
       .apply(
         displayColor: Colors.white,
       );
+}
+
+FloatingActionButton themeSelectorButton(BuildContext context) {
+  return FloatingActionButton(
+      onPressed: () {
+        Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
+      },
+      backgroundColor: darkGreen,
+      child: Provider.of<ThemeNotifier>(context).themeMode == ThemeMode.light
+          ? const Icon(Icons.dark_mode)
+          : const Icon(Icons.light_mode));
 }

@@ -103,16 +103,7 @@ class _Dashboard extends State<Dashboard> {
           child: _currentScreen,
         )),
       ]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
-        },
-        backgroundColor: darkGreen,
-        child: Provider.of<ThemeNotifier>(context).themeMode ==
-                ThemeMode.light
-            ? const Icon(Icons.dark_mode)
-            : const Icon(Icons.light_mode),
-      ),
+      floatingActionButton: themeSelectorButton(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
