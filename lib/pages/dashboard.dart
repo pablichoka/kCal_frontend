@@ -1,17 +1,16 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kcal_control_frontend/pages/homePage.dart';
 import 'package:kcal_control_frontend/pages/menu_builder.dart';
 import 'package:kcal_control_frontend/pages/menu_list.dart';
 import 'package:kcal_control_frontend/pages/profile.dart';
+import 'package:kcal_control_frontend/services/api_service.dart' as api;
 import 'package:provider/provider.dart';
 import 'package:sidebarx/sidebarx.dart';
-import 'package:kcal_control_frontend/services/api_service.dart' as api;
 
 import '../main.dart';
 import '../services/theme_provider.dart';
 import '../themes/sidebar_theme.dart';
-import '../themes/theme_colors.dart';
+import '../themes/theme_data.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -67,12 +66,12 @@ class _Dashboard extends State<Dashboard> {
                   .logout(storage.read(key: 'accessToken'));
             },
             style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(Colors.transparent),
+              iconColor: WidgetStateProperty.all(white),
             ),
             icon: const Icon(Icons.logout),
             iconSize: 40,
             padding: const EdgeInsets.only(bottom: 40),
-            hoverColor: lightGreen,
+            hoverColor: Colors.transparent,
           ),
           headerBuilder: (context, extended) {
             return iconHeader;

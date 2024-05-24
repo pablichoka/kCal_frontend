@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
-import 'package:kcal_control_frontend/themes/theme_colors.dart';
+import 'package:kcal_control_frontend/themes/theme_data.dart';
 
 SidebarXTheme collapsedTheme(double width, BuildContext context) {
   var theme = SidebarXTheme(
@@ -13,8 +13,10 @@ SidebarXTheme collapsedTheme(double width, BuildContext context) {
     ),
     hoverColor: hoverColor,
     textStyle: sidebarTextStyle,
-    selectedTextStyle: sidebarTextStyle,
-    hoverTextStyle: sidebarTextStyle,
+    selectedTextStyle:
+        const TextStyle(color: dark, fontSize: 20, fontWeight: FontWeight.bold),
+    hoverTextStyle:
+        const TextStyle(color: dark, fontSize: 20, fontWeight: FontWeight.bold),
     itemTextPadding: const EdgeInsets.only(left: 30),
     selectedItemTextPadding: const EdgeInsets.only(left: 30),
     itemDecoration: BoxDecoration(
@@ -30,8 +32,8 @@ SidebarXTheme collapsedTheme(double width, BuildContext context) {
         )
       ],
     ),
-    iconTheme: IconThemeData(
-      color: Theme.of(context).focusColor,
+    iconTheme: const IconThemeData(
+      color: white,
       size: 40,
     ),
     selectedIconTheme: const IconThemeData(
@@ -45,15 +47,16 @@ SidebarXTheme collapsedTheme(double width, BuildContext context) {
 SidebarXTheme extendedTheme(double width, BuildContext context) {
   var theme = SidebarXTheme(
     width: width,
-    decoration: BoxDecoration(
-      color: Theme.of(context).primaryColor,
-    ),
     itemDecoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
     ),
+    itemMargin: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
     selectedItemDecoration: BoxDecoration(
-      color: Theme.of(context).focusColor,
+      color: white,
       borderRadius: BorderRadius.circular(20),
+    ),
+    decoration: BoxDecoration(
+      color: Theme.of(context).primaryColor,
     ),
   );
   return theme;
@@ -61,11 +64,10 @@ SidebarXTheme extendedTheme(double width, BuildContext context) {
 
 const iconHeader = SizedBox(
   height: 150,
-  child: Padding(
-    padding: EdgeInsets.only(bottom: 16.0, top: 16.0),
-    child: Icon(Icons.fastfood, size: 80, color: white),
+  child: Center(
+    child: Icon(Icons.fastfood, size: 70, color: white),
   ),
 );
 
 const sidebarTextStyle =
-    TextStyle(color: dark, fontSize: 20, fontWeight: FontWeight.bold);
+    TextStyle(color: white, fontSize: 20, fontWeight: FontWeight.bold);
