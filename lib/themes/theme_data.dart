@@ -48,20 +48,16 @@ ThemeData buildKCalControlDarkTheme() {
 }
 
 TextTheme buildKCalControlTextTheme(TextTheme base) {
-  return base
-      .copyWith(
-        headlineSmall: base.headlineSmall?.copyWith(
-          fontFamily: 'ProductSans',
-          fontWeight: FontWeight.w300,
-        ),
-        headlineMedium: base.headlineMedium
-            ?.copyWith(fontFamily: 'ProductSans', fontWeight: FontWeight.w400),
-        headlineLarge: base.headlineLarge
-            ?.copyWith(fontFamily: 'ProductSans', fontWeight: FontWeight.w500),
-      )
-      .apply(
-        displayColor: Colors.white,
-      );
+  return base.copyWith(
+    headlineSmall: base.headlineSmall?.copyWith(
+      fontFamily: 'ProductSans',
+      fontWeight: FontWeight.w300,
+    ),
+    headlineMedium: base.headlineMedium
+        ?.copyWith(fontFamily: 'ProductSans', fontWeight: FontWeight.w400),
+    headlineLarge: base.headlineLarge
+        ?.copyWith(fontFamily: 'ProductSans', fontWeight: FontWeight.w500),
+  );
 }
 
 FloatingActionButton themeSelectorButton(BuildContext context) {
