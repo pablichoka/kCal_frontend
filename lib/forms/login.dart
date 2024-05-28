@@ -42,45 +42,81 @@ class LoginPageState extends State<LoginPage> {
       appBar: DAppBar(title: title, actions: const [], returnable: true),
       body: FocusScope(
         node: _focusNode,
-        child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Username'),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter your username';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _username = value!;
-                  },
+        child: Center(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.4,
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: Card(
+              elevation: 5,
+              margin: const EdgeInsets.all(20),
+              color: Theme.of(context).cardColor,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        child: TextFormField(
+                          decoration:
+                              const InputDecoration(labelText: 'Username'),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your username';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _username = value!;
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        child: TextFormField(
+                          decoration:
+                              const InputDecoration(labelText: 'Password'),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _password = value!;
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () async {
+                          await _login();
+                        },
+                        child: const Text('Log in'),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        heightFactor: 3,
+                        child: InkWell(
+                          //TODO: Implement password recovery
+                          onTap: () {},
+                          child: const Text(
+                            'Did you forget your password?',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _password = value!;
-                  },
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () async {
-                    await _login();
-                  },
-                  child: const Text('Log in'),
-                ),
-              ],
+              ),
             ),
           ),
         ),

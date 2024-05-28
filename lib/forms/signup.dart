@@ -47,115 +47,151 @@ class _SignUpPageState extends State<SignUpPage> {
         actions: const [],
         returnable: true,
       ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Username'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your username';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  newUser.username = value!;
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  newUser.email = value!;
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'First name'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your first name';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  newUser.firstName = value!;
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Last name'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  newUser.lastName = value!;
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                // inputFormatters: [
-                //   FilteringTextInputFormatter.allow(
-                //     RegExp(r'^[0-9+A-Za-z\s]+$'),
-                //   ),
-                // ],
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  newUser.password = value!;
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Mobile'),
-                // inputFormatters: [
-                //   FilteringTextInputFormatter.allow(
-                //       RegExp(r'^(?=.*[0-9]){15,}$'),
-                //   )],
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your mobile with the prefix of you country';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  newUser.mobile = value!;
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  if (await _signup()) {
-                    Navigator.pushReplacement(_navigationContext!,
-                        MaterialPageRoute(builder: (ctx) => const WebIndex()));
-                  } else {
-                    ScaffoldMessenger.of(_navigationContext!).showSnackBar(
-                      const SnackBar(
-                        content:
-                            Text('Something went wrong during registration.'),
+      body: Center(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.4,
+          height: MediaQuery.of(context).size.height * 0.6,
+          child: Card(
+            elevation: 5,
+            margin: const EdgeInsets.all(20),
+            color: Theme.of(context).cardColor,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: TextFormField(
+                          decoration:
+                              const InputDecoration(labelText: 'Username'),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your username';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            newUser.username = value!;
+                          },
+                        ),
                       ),
-                    );
-                  }
-                },
-                child: const Text('Sign up'),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: TextFormField(
+                          decoration: const InputDecoration(labelText: 'Email'),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            newUser.email = value!;
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: TextFormField(
+                          decoration:
+                              const InputDecoration(labelText: 'First name'),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your first name';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            newUser.firstName = value!;
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: TextFormField(
+                          decoration:
+                              const InputDecoration(labelText: 'Last name'),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            newUser.lastName = value!;
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: TextFormField(
+                          decoration:
+                              const InputDecoration(labelText: 'Password'),
+                          obscureText: true,
+                          // inputFormatters: [
+                          //   FilteringTextInputFormatter.allow(
+                          //     RegExp(r'^[0-9+A-Za-z\s]+$'),
+                          //   ),
+                          // ],
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            newUser.password = value!;
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: TextFormField(
+                          decoration: const InputDecoration(labelText: 'Mobile'),
+                          // inputFormatters: [
+                          //   FilteringTextInputFormatter.allow(
+                          //       RegExp(r'^(?=.*[0-9]){15,}$'),
+                          //   )],
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your mobile with the prefix of you country';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            newUser.mobile = value!;
+                          },
+                        ),
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (await _signup()) {
+                            Navigator.pushReplacement(
+                                _navigationContext!,
+                                MaterialPageRoute(
+                                    builder: (ctx) => const WebIndex()));
+                          } else {
+                            ScaffoldMessenger.of(_navigationContext!)
+                                .showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Something went wrong during registration.'),
+                              ),
+                            );
+                          }
+                        },
+                        child: const Text('Sign up'),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ],
+            ),
           ),
         ),
-      ),
       floatingActionButton: themeSelectorButton(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
