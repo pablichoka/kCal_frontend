@@ -15,16 +15,20 @@ class DAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         title: Text(title, style: Theme.of(context).textTheme.headlineLarge),
         automaticallyImplyLeading: returnable ? true : false,
-        leading: Icon(Icons.fastfood, color: Theme.of(context).textTheme.headlineLarge?.color, size: 40,),
+        leading: Icon(
+          Icons.fastfood,
+          color: Theme.of(context).textTheme.headlineLarge?.color,
+          size: 40,
+        ),
         toolbarHeight: 80,
         elevation: 0,
         backgroundColor: Theme.of(context).canvasColor,
         centerTitle: false,
         actions: actions,
-        // flexibleSpace: Container(
-        //     decoration: BoxDecoration(
-        //   color: Theme.of(context).primaryColor,
-        );
+        flexibleSpace: Container(
+            decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+        )));
   }
 
   @override
