@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../forms/login.dart';
 import '../../forms/signup.dart';
 import '../../themes/theme_data.dart';
-import '../../widgets/app_bar.dart';
+import '../../widgets/common/app_bar.dart';
+import '../../widgets/desktop/background_desktop.dart';
+import '../../widgets/desktop/carrousel_desktop.dart';
 
 const title = 'kCal Control';
 
@@ -54,11 +56,15 @@ Scaffold desktopIndex(BuildContext context) {
         Column(
           children: <Widget>[
             SizedBox(
-                height: MediaQuery.of(context).size.height * 0.40,
+                height: MediaQuery.of(context).size.height * 0.20,
                 child: Center(
                   child: Text('Welcome to kCal Control',
                       style: Theme.of(context).textTheme.headlineLarge),
                 )),
+            SizedBox(
+                width: MediaQuery.of(context).size.width * 0.80,
+                height: MediaQuery.of(context).size.height * 0.40,
+                child: IndexDesktopCarousel(context))
           ],
         ),
       ],
@@ -66,53 +72,4 @@ Scaffold desktopIndex(BuildContext context) {
     floatingActionButton: themeSelectorButton(context),
     floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
   );
-}
-
-class BackgroundScreen extends StatelessWidget {
-  const BackgroundScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: BackgroundPainter(context),
-      child: Container(),
-    );
-  }
-}
-
-class BackgroundPainter extends CustomPainter {
-  final BuildContext context;
-
-  BackgroundPainter(this.context);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint();
-
-    paint.color = Theme.of(context).primaryColor;
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint);
-
-    Path trianglePath = Path();
-    trianglePath.moveTo(0, size.height * 0.6);
-    trianglePath.lineTo(size.width, size.height * 0.6);
-    trianglePath.lineTo(size.width, size.height);
-    trianglePath.close();
-    paint.color = Theme.of(context).primaryColor;
-    canvas.drawPath(trianglePath, paint);
-
-    Path bottomPath = Path();
-    bottomPath.moveTo(0, size.height * 0.8);
-    bottomPath.lineTo(size.width, size.height * 0.6);
-    bottomPath.lineTo(size.width, size.height);
-    bottomPath.lineTo(0, size.height);
-    bottomPath.close();
-
-    paint.color = Theme.of(context).highlightColor;
-    canvas.drawPath(bottomPath, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
-  }
 }

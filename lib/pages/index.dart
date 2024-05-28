@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kcal_control_frontend/forms/login.dart';
 import 'package:kcal_control_frontend/forms/signup.dart';
 import 'package:kcal_control_frontend/pages/desktop/index.dart';
-import 'package:kcal_control_frontend/widgets/app_bar.dart';
+import 'package:kcal_control_frontend/widgets/common/app_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../services/api_service.dart' as api;

@@ -24,6 +24,7 @@ dependencies:
   sidebarx: ^0.17.1
   provider: ^6.1.2
   material_theme_builder: ^1.0.4
+  infinite_carousel: ^1.1.1
 
 dev_dependencies:
   flutter_test:

@@ -3,7 +3,7 @@ import 'package:kcal_control_frontend/models/user.dart';
 import 'package:kcal_control_frontend/services/api_service.dart' as api;
 
 import '../themes/theme_data.dart';
-import '../widgets/app_bar.dart';
+import '../widgets/common/app_bar.dart';
 import 'package:kcal_control_frontend/pages/index.dart';
 
 class SignUpPage extends StatefulWidget {
