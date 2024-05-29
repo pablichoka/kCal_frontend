@@ -70,3 +70,14 @@ FloatingActionButton themeSelectorButton(BuildContext context) {
           ? const Icon(Icons.dark_mode)
           : const Icon(Icons.light_mode));
 }
+
+var kContainerDecoration = BoxDecoration(
+  borderRadius: BorderRadius.circular(10.0),
+  boxShadow: const [
+    BoxShadow(
+      color: Colors.black26,
+      blurRadius: 6.0,
+      offset: Offset(0, 2),
+    ),
+  ],
+);
