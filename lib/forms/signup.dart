@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:libphonenumber/libphonenumber.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:kcal_control_frontend/models/user.dart';
+import 'package:kcal_control_frontend/pages/index.dart';
 import 'package:kcal_control_frontend/services/api_service.dart' as api;
 
 import '../themes/theme_data.dart';
 import '../widgets/common/app_bar.dart';
-import 'package:kcal_control_frontend/pages/index.dart';
-
 import '../widgets/desktop/background_desktop.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -67,6 +68,7 @@ class SignUpPageState extends State<SignUpPage> {
       },
       obscureText: obscureText,
       decoration: InputDecoration(
+        labelText: hintText,
         prefixIcon: Icon(icon),
         hintText: hintText,
         border: OutlineInputBorder(
@@ -86,6 +88,20 @@ class SignUpPageState extends State<SignUpPage> {
       }
     }
     return false;
+  }
+
+  final TextEditingController _phoneController = TextEditingController();
+  PhoneNumber number = PhoneNumber(isoCode: 'US');
+
+  Future<bool?> validatePhoneNumber(String phoneNumber, String isoCode) async {
+    bool? isValid = false;
+    try {
+      isValid = await PhoneNumberUtil.isValidPhoneNumber(
+          phoneNumber: phoneNumber, isoCode: isoCode);
+    } catch (e) {
+      print(e);
+    }
+    return isValid;
   }
 
   @override
@@ -127,7 +143,8 @@ class SignUpPageState extends State<SignUpPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     direction: Axis.vertical,
                     children: <Widget>[
-                      const SizedBox(height: 20),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 24.0),
                         decoration: kContainerDecoration.copyWith(
@@ -137,7 +154,9 @@ class SignUpPageState extends State<SignUpPage> {
                           key: _formKey,
                           child: Column(
                             children: <Widget>[
-                              const SizedBox(height: 20),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.02),
                               const Text(
                                 'Welcome!',
                                 style: TextStyle(
@@ -145,75 +164,147 @@ class SignUpPageState extends State<SignUpPage> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.01),
                               const Text(
                                 'Provide the required data to get your access',
                                 style: TextStyle(fontSize: 16),
                               ),
-                              const SizedBox(height: 20),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.02),
                               buildTextField(
                                 hintText: 'Username',
-                                icon: Icons.person,
+                                icon: Icons.alternate_email,
                                 field: 'username',
                               ),
-                              const SizedBox(height: 20),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.02),
                               buildTextField(
                                 hintText: 'Email or username',
-                                icon: Icons.person,
+                                icon: Icons.email,
                                 field: 'email',
                               ),
-                              const SizedBox(height: 20),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.02),
                               buildTextField(
                                   hintText: 'First name',
                                   icon: Icons.person,
                                   field: 'firstName'),
-                              const SizedBox(height: 20),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.02),
                               buildTextField(
                                   hintText: 'Last name',
                                   icon: Icons.person,
                                   field: 'lastName'),
-                              const SizedBox(height: 20),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.02),
                               buildTextField(
                                 hintText: 'Password',
                                 icon: Icons.lock,
                                 obscureText: true,
                                 field: 'password',
                               ),
-                              const SizedBox(height: 20),
-                              buildTextField(
-                                  hintText: 'Phone number',
-                                  icon: Icons.phone,
-                                  field: 'mobile'),
-                              const SizedBox(height: 20),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.02),
+
+                              InternationalPhoneNumberInput(
+                                onInputChanged: (PhoneNumber number) {
+                                  newUser.mobile = number.phoneNumber!;
+                                },
+                                onInputValidated: (bool value) {
+                                  print(value);
+                                },
+                                //FIXME: validate phone number
+                                validator: (value) {
+                                  validatePhoneNumber(
+                                      value!,
+                                      PhoneNumber.getRegionInfoFromPhoneNumber(
+                                          value));
+                                  return null;
+                                },
+                                selectorConfig: const SelectorConfig(
+                                  selectorType:
+                                      PhoneInputSelectorType.BOTTOM_SHEET,
+                                  useBottomSheetSafeArea: true,
+                                  showFlags: true,
+                                  trailingSpace: true,
+                                ),
+                                ignoreBlank: true,
+                                inputDecoration: InputDecoration(
+                                  labelText: 'Phone number',
+                                  prefixIcon: const Icon(Icons.phone),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                                autoValidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                selectorTextStyle:
+                                    const TextStyle(color: Colors.black),
+                                initialValue: number,
+                                textFieldController: _phoneController,
+                                formatInput: false,
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        signed: true, decimal: false),
+                                inputBorder: const OutlineInputBorder(),
+                                onSaved: (PhoneNumber number) {
+                                  newUser.mobile = number.phoneNumber!;
+                                },
+                              ),
+                              // buildTextField(
+                              //     hintText: 'Phone number',
+                              //     icon: Icons.phone,
+                              //     field: 'mobile'),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.02),
                               ElevatedButton(
                                 onPressed: () async {
-                                  if (await _signup()) {
-                                    Navigator.pushReplacement(
-                                      _navigationContext!,
-                                      PageRouteBuilder(
-                                        pageBuilder: (context, animation1, animation2) => const WebIndex(),
-                                        transitionDuration: const Duration(milliseconds: 200),
-                                        transitionsBuilder: (context, animation, animation2, child) {
-                                          final offsetAnimation = Tween<Offset>(
-                                            begin: const Offset(1.0, 0.0),
-                                            end: Offset.zero,
-                                          ).animate(animation);
-                                          return SlideTransition(
-                                            position: offsetAnimation,
-                                            child: child,
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  } else {
-                                    ScaffoldMessenger.of(_navigationContext!)
-                                        .showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          'Something went wrong during registration.',
+                                  if (_formKey.currentState!.validate()) {
+                                    _formKey.currentState!.save();
+                                    try {
+                                      if (await _signup()) {
+                                        Navigator.pushReplacement(
+                                          _navigationContext!,
+                                          PageRouteBuilder(
+                                            pageBuilder: (context, animation1,
+                                                    animation2) =>
+                                                const WebIndex(),
+                                            transitionDuration: const Duration(
+                                                milliseconds: 200),
+                                            transitionsBuilder: (context,
+                                                animation, animation2, child) {
+                                              final offsetAnimation =
+                                                  Tween<Offset>(
+                                                begin: const Offset(1.0, 0.0),
+                                                end: Offset.zero,
+                                              ).animate(animation);
+                                              return SlideTransition(
+                                                position: offsetAnimation,
+                                                child: child,
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      }
+                                    } catch (e) {
+                                      ScaffoldMessenger.of(_navigationContext!)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            'Something went wrong during registration.',
+                                          ),
                                         ),
-                                      ),
-                                    );
+                                      );
+                                    }
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -225,7 +316,9 @@ class SignUpPageState extends State<SignUpPage> {
                                 ),
                                 child: const Text('Sign up'),
                               ),
-                              const SizedBox(height: 20),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.02),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
@@ -240,7 +333,9 @@ class SignUpPageState extends State<SignUpPage> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 20),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.02),
                             ],
                           ),
                         ),
