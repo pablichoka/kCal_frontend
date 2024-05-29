@@ -91,7 +91,7 @@ class SignUpPageState extends State<SignUpPage> {
   }
 
   final TextEditingController _phoneController = TextEditingController();
-  PhoneNumber number = PhoneNumber(isoCode: 'US');
+  PhoneNumber _number = PhoneNumber(isoCode: 'US');
 
   Future<bool?> validatePhoneNumber(String phoneNumber, String isoCode) async {
     bool? isValid = false;
@@ -216,17 +216,17 @@ class SignUpPageState extends State<SignUpPage> {
 
                               InternationalPhoneNumberInput(
                                 onInputChanged: (PhoneNumber number) {
-                                  newUser.mobile = number.phoneNumber!;
+                                  _number = number;
                                 },
                                 onInputValidated: (bool value) {
                                   print(value);
                                 },
                                 //FIXME: validate phone number
                                 validator: (value) {
+                                  print(_number.isoCode);
                                   validatePhoneNumber(
-                                      value!,
-                                      PhoneNumber.getRegionInfoFromPhoneNumber(
-                                          value));
+                                      value!, _number.isoCode!
+                                      );
                                   return null;
                                 },
                                 selectorConfig: const SelectorConfig(
@@ -248,7 +248,7 @@ class SignUpPageState extends State<SignUpPage> {
                                     AutovalidateMode.onUserInteraction,
                                 selectorTextStyle:
                                     const TextStyle(color: Colors.black),
-                                initialValue: number,
+                                initialValue: _number,
                                 textFieldController: _phoneController,
                                 formatInput: false,
                                 keyboardType:
