@@ -5,6 +5,7 @@ import 'package:kcal_control_frontend/models/user.dart';
 import 'package:kcal_control_frontend/pages/index.dart';
 import 'package:kcal_control_frontend/services/api_service.dart' as api;
 
+import '../services/phone_validator.dart';
 import '../themes/theme_data.dart';
 import '../widgets/common/app_bar.dart';
 import '../widgets/desktop/background_desktop.dart';
@@ -91,18 +92,7 @@ class SignUpPageState extends State<SignUpPage> {
   }
 
   final TextEditingController _phoneController = TextEditingController();
-  PhoneNumber _number = PhoneNumber(isoCode: 'US');
-
-  Future<bool?> validatePhoneNumber(String phoneNumber, String isoCode) async {
-    bool? isValid = false;
-    try {
-      isValid = await PhoneNumberUtil.isValidPhoneNumber(
-          phoneNumber: phoneNumber, isoCode: isoCode);
-    } catch (e) {
-      print(e);
-    }
-    return isValid;
-  }
+  PhoneNumber _number = PhoneNumber(isoCode: 'ES');
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +215,7 @@ class SignUpPageState extends State<SignUpPage> {
                                 validator: (value) {
                                   print(_number.isoCode);
                                   validatePhoneNumber(
-                                      value!, _number.isoCode!
+                                      phoneNumber: value!, isoCode: _number.isoCode!
                                       );
                                   return null;
                                 },
