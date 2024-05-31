@@ -83,6 +83,7 @@ class SignUpPageState extends State<SignUpPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
+        print(newUser.toJson());
         return await api.ApiService.instance.signup(newUser);
       } on FlutterErrorDetails catch (error) {
         throw ErrorWidget.builder(error);
@@ -214,10 +215,12 @@ class SignUpPageState extends State<SignUpPage> {
                                 //FIXME: validate phone number
                                 validator: (value) {
                                   print(_number.isoCode);
-                                  validatePhoneNumber(
-                                      phoneNumber: value!, isoCode: _number.isoCode!
-                                      );
-                                  return null;
+                                  if (validatePhoneNumber(
+                                      phoneNumber: value!,
+                                      isoCode: _number.isoCode!)) {
+                                    return null;
+                                  }else{
+                                    return 'Please enter a valid phone number.';                                  }
                                 },
                                 selectorConfig: const SelectorConfig(
                                   selectorType:

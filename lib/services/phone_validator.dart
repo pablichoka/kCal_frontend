@@ -4,15 +4,19 @@ bool validatePhoneNumber({
 }) {
   final cleanedPhoneNumber = phoneNumber.replaceAll(RegExp(r'\D'), '');
 
+  print(cleanedPhoneNumber.length);
+
   if (countryLengths.containsKey(isoCode)) {
+    print('aqui');
     if (cleanedPhoneNumber.length != countryLengths[isoCode]) {
+      print('aqui2');
       return false;
     }
   }
 
-  if (!RegExp(r'^\d+$').hasMatch(cleanedPhoneNumber)) {
-    return false;
-  }
+  // if (!RegExp(r'^\d+$').hasMatch(cleanedPhoneNumber)) {
+  //   return false;
+  // }
 
   return true;
 }
