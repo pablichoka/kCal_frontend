@@ -209,18 +209,13 @@ class SignUpPageState extends State<SignUpPage> {
                                 onInputChanged: (PhoneNumber number) {
                                   _number = number;
                                 },
-                                onInputValidated: (bool value) {
-                                  print(value);
-                                },
-                                //FIXME: validate phone number
                                 validator: (value) {
-                                  print(_number.isoCode);
                                   if (validatePhoneNumber(
                                       phoneNumber: value!,
                                       isoCode: _number.isoCode!)) {
                                     return null;
                                   }else{
-                                    return 'Please enter a valid phone number.';                                  }
+                                    return 'Enter a valid phone number';                                  }
                                 },
                                 selectorConfig: const SelectorConfig(
                                   selectorType:
@@ -240,7 +235,7 @@ class SignUpPageState extends State<SignUpPage> {
                                 autoValidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 selectorTextStyle:
-                                    const TextStyle(color: Colors.black),
+                                    TextStyle(color: Theme.of(context).textTheme.displaySmall?.color),
                                 initialValue: _number,
                                 textFieldController: _phoneController,
                                 formatInput: false,
