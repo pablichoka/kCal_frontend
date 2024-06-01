@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../forms/login.dart';
 import '../../forms/signup.dart';
-import '../../themes/theme_data.dart';
-import '../../widgets/common/app_bar.dart';
 import '../../widgets/desktop/background_index.dart';
 
 Scaffold mobileIndex(BuildContext context) {

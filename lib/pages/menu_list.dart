@@ -10,6 +10,6 @@ class MenuList extends StatefulWidget {
 class _MenuList extends State<MenuList>{
   @override
   Widget build(BuildContext context){
-    return Scaffold(restorationId: 'Aye');
+    return const Scaffold(restorationId: 'Aye');
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:kcal_control_frontend/pages/dashboard.dart';
 import 'package:kcal_control_frontend/pages/index.dart';
 import 'package:kcal_control_frontend/services/theme_provider.dart';
 import 'package:kcal_control_frontend/themes/theme_data.dart';

@@ -6,7 +6,7 @@ import 'package:kcal_control_frontend/services/api_service.dart' as api;
 import '../pages/dashboard.dart';
 import '../themes/theme_data.dart';
 import '../widgets/common/app_bar.dart';
-import '../widgets/desktop/background_desktop.dart';
+import '../widgets/desktop/background_index.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

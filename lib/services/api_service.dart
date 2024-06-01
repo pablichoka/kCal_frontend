@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:kcal_control_frontend/main.dart';
 import 'package:kcal_control_frontend/models/user.dart';
@@ -56,10 +54,10 @@ class ApiService {
 
   Future<bool> logout(Future<String?> accessToken) async {
     Uri uri = Uri.parse('$_baseUrl/logout');
-    final _accessToken = await accessToken;
+    final accessToken0 = await accessToken;
     final response = await http.post(uri, headers: {
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $_accessToken'
+      'Authorization': 'Bearer $accessToken0'
     });
     if (response.statusCode == 200) {
       await storage.delete(key: 'accessToken');

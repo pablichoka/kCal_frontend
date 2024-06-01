@@ -3,7 +3,7 @@ import 'package:kcal_control_frontend/pages/homePage.dart';
 import 'package:kcal_control_frontend/pages/menu_builder.dart';
 import 'package:kcal_control_frontend/pages/menu_list.dart';
 import 'package:kcal_control_frontend/pages/profile.dart';
-import 'package:kcal_control_frontend/widgets/common/dashboardSidebar.dart';
+import 'package:kcal_control_frontend/widgets/common/dashboard_sidebar.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 import '../themes/theme_data.dart';

@@ -82,7 +82,6 @@ class SignUpPageState extends State<SignUpPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        print(newUser.toJson());
         return await api.ApiService.instance.signup(newUser);
       } on FlutterErrorDetails catch (error) {
         throw ErrorWidget.builder(error);
@@ -246,10 +245,6 @@ class SignUpPageState extends State<SignUpPage> {
                                   newUser.mobile = number.phoneNumber!;
                                 },
                               ),
-                              // buildTextField(
-                              //     hintText: 'Phone number',
-                              //     icon: Icons.phone,
-                              //     field: 'mobile'),
                               SizedBox(
                                   height: MediaQuery.of(context).size.height *
                                       0.02),
@@ -311,12 +306,16 @@ class SignUpPageState extends State<SignUpPage> {
                                 children: <Widget>[
                                   TextButton(
                                     onPressed: () {},
-                                    child: const Text('Terms and Conditions'),
+                                    child: Text(
+                                      style: Theme.of(context).textTheme.labelSmall,
+                                        'Terms and Conditions'),
                                   ),
                                   const Text('|'),
                                   TextButton(
                                     onPressed: () {},
-                                    child: const Text('Privacy Policy'),
+                                    child: Text(
+                                        style: Theme.of(context).textTheme.labelSmall,
+                                        'Privacy Policy'),
                                   ),
                                 ],
                               ),

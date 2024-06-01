@@ -123,7 +123,7 @@ class _ActionsRow extends StatelessWidget {
           iconTheme: const IconThemeData(color: Colors.grey, size: 18),
           textButtonTheme: TextButtonThemeData(
               style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all(Colors.grey),
+            foregroundColor: WidgetStateProperty.all(Colors.grey),
           ))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

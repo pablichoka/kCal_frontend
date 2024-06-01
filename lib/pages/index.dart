@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kcal_control_frontend/forms/login.dart';
-import 'package:kcal_control_frontend/forms/signup.dart';
 import 'package:kcal_control_frontend/pages/desktop/index.dart';
-import 'package:kcal_control_frontend/widgets/common/app_bar.dart';
-import 'package:provider/provider.dart';
 
 import '../services/api_service.dart' as api;
-import '../services/theme_provider.dart';
-import '../themes/theme_data.dart';
 import 'mobile/index.dart';
-
-
 
 class WebIndex extends StatefulWidget {
   const WebIndex({super.key});
@@ -48,16 +40,5 @@ class _WebIndexState extends State<WebIndex> {
     return MediaQuery.of(context).size.width > 600
         ? desktopIndex(context)
         : mobileIndex(context);
-    //   floatingActionButton: themeSelectorButton(context),
-    //   floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-    // );
   }
-}
-
-AppBar _indexAppBar() {
-  return AppBar(
-    backgroundColor: Colors.transparent,
-    title: const Text("kCal Control"),
-    leading: const Icon(Icons.fastfood),
-  );
 }
