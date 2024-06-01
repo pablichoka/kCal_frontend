@@ -33,7 +33,7 @@ class ApiService {
       _role = jsonDecode(response.body)['roleName'];
       return true;
     } else {
-      throw Exception('Failed to login: ${response.body}');
+      throw Exception('Failed to login');
     }
   }
 

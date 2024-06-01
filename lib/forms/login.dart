@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:kcal_control_frontend/forms/signup.dart';
 import 'package:kcal_control_frontend/services/api_service.dart' as api;
 
+import '../models/logged_user.dart';
 import '../pages/dashboard.dart';
 import '../themes/theme_data.dart';
 import '../widgets/common/app_bar.dart';
@@ -20,8 +21,10 @@ class LoginPageState extends State<LoginPage> {
   final String title = "kCal Control";
   final FocusScopeNode _focusNode = FocusScopeNode();
   BuildContext? _navigationContext;
-  late final String _username;
-  late final String _password;
+  var _newLoggedUser = LoggedUser(
+    username: '',
+    password: '',
+  );
   late bool _rememberMe = false;
 
   TextFormField buildTextField(
@@ -52,24 +55,15 @@ class LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        bool loginSuccessful =
-            await api.ApiService.instance.login(_username, _password);
-        if (loginSuccessful) {
-          Navigator.pushReplacement(
-            _navigationContext!,
-            MaterialPageRoute(builder: (ctx) => const Dashboard()),
-          );
-          return loginSuccessful;
-        } else {
-          ScaffoldMessenger.of(_navigationContext!).showMaterialBanner(
-            const MaterialBanner(
-              content: Text('There was an error signing in.'),
-              actions: [],
-            ),
-          );
-        }
+        return await api.ApiService.instance
+            .login(_newLoggedUser.username, _newLoggedUser.password);
       } catch (e) {
-        throw ErrorWidget(e);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Something failed during login: $e'),
+          ),
+        );
+        return false;
       }
     }
     return false;
@@ -132,129 +126,145 @@ class LoginPageState extends State<LoginPage> {
                                   const EdgeInsets.symmetric(horizontal: 24.0),
                               decoration: kContainerDecoration.copyWith(
                                   color: Theme.of(context).cardColor),
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    const SizedBox(height: 20),
-                                    const Text(
-                                      'Welcome Back!',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    const Text(
-                                      'Login to continue',
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    buildTextField(
-                                      hintText: 'Email or username',
-                                      icon: Icons.person,
-                                      onSave: (value) {
-                                        _username = value!;
-                                      },
-                                    ),
-                                    const SizedBox(height: 20),
-                                    buildTextField(
-                                      hintText: 'Password',
-                                      icon: Icons.lock,
-                                      obscureText: true,
-                                      onSave: (value) {
-                                        _password = value!;
-                                      },
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Row(
-                                      children: <Widget>[
-                                        Checkbox(
-                                          value: _rememberMe,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              _rememberMe = value!;
-                                            });
-                                          },
-                                        ),
-                                        const Text('Remember me'),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        _login();
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            Theme.of(context).splashColor,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 40, vertical: 5),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      const SizedBox(height: 20),
+                                      const Text(
+                                        'Welcome Back!',
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      child: const Text('Sign In'),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          PageRouteBuilder(
-                                            pageBuilder: (context, animation1,
-                                                    animation2) =>
-                                                const SignUpPage(),
-                                            transitionDuration: const Duration(
-                                                milliseconds: 300),
-                                            transitionsBuilder: (context,
-                                                animation, animation2, child) {
-                                              final offsetAnimation =
-                                                  Tween<Offset>(
-                                                begin: const Offset(1.0, 0.0),
-                                                end: Offset.zero,
-                                              ).animate(animation);
-                                              return SlideTransition(
-                                                position: offsetAnimation,
-                                                child: child,
-                                              );
+                                      const SizedBox(height: 10),
+                                      const Text(
+                                        'Login to continue',
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      buildTextField(
+                                        hintText: 'Email or username',
+                                        icon: Icons.person,
+                                        onSave: (value) {
+                                          _newLoggedUser.username = value!;
+                                        },
+                                      ),
+                                      const SizedBox(height: 20),
+                                      buildTextField(
+                                        hintText: 'Password',
+                                        icon: Icons.lock,
+                                        obscureText: true,
+                                        onSave: (value) {
+                                          _newLoggedUser.password = value!;
+                                        },
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        children: <Widget>[
+                                          Checkbox(
+                                            value: _rememberMe,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _rememberMe = value!;
+                                              });
                                             },
                                           ),
-                                        );
-                                      },
-                                      child: Column(
-                                        children: [
-                                          const Text('New User? Sign Up '),
+                                          const Text('Remember me'),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          await _login()
+                                              ? Navigator.push(
+                                                  _navigationContext!,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const Dashboard()))
+                                              : null;
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              Theme.of(context).splashColor,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 40, vertical: 5),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                        ),
+                                        child: const Text('Sign In'),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            PageRouteBuilder(
+                                              pageBuilder: (context, animation1,
+                                                      animation2) =>
+                                                  const SignUpPage(),
+                                              transitionDuration:
+                                                  const Duration(
+                                                      milliseconds: 300),
+                                              transitionsBuilder: (context,
+                                                  animation,
+                                                  animation2,
+                                                  child) {
+                                                final offsetAnimation =
+                                                    Tween<Offset>(
+                                                  begin: const Offset(1.0, 0.0),
+                                                  end: Offset.zero,
+                                                ).animate(animation);
+                                                return SlideTransition(
+                                                  position: offsetAnimation,
+                                                  child: child,
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        },
+                                        child: Column(
+                                          children: [
+                                            const Text('New User? Sign Up '),
+                                            TextButton(
+                                              onPressed: () {},
+                                              child: const Text(
+                                                  'Forgot password?'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
                                           TextButton(
                                             onPressed: () {},
-                                            child:
-                                                const Text('Forgot password?'),
+                                            child: Text(
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall,
+                                                'Terms and Conditions'),
+                                          ),
+                                          const Text('|'),
+                                          TextButton(
+                                            onPressed: () {},
+                                            child: Text(
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall,
+                                                'Privacy Policy'),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        TextButton(
-                                          onPressed: () {},
-                                          child: Text(
-                                              style: Theme.of(context).textTheme.labelSmall,
-                                              'Terms and Conditions'),
-                                        ),
-                                        const Text('|'),
-                                        TextButton(
-                                          onPressed: () {},
-                                          child: Text(
-                                            style: Theme.of(context).textTheme.labelSmall,
-                                              'Privacy Policy'),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 20),
-                                  ])),
+                                      const SizedBox(height: 20),
+                                    ]),
+                              )),
                         ),
                       )
                     ])),

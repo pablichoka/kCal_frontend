@@ -5,7 +5,7 @@ import '../../forms/signup.dart';
 import '../../themes/theme_data.dart';
 import '../../widgets/common/app_bar.dart';
 import '../../widgets/desktop/background_index.dart';
-import '../../widgets/desktop/carrousel_index_desktop.dart';
+import '../../widgets/desktop/carrousel_index.dart';
 
 const title = 'kCal Control';
 
