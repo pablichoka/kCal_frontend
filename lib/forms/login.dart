@@ -28,7 +28,7 @@ class LoginPageState extends State<LoginPage> {
       {required String hintText,
       required IconData icon,
       bool obscureText = false,
-  required Function(String?) onSave}) {
+      required Function(String?) onSave}) {
     return TextFormField(
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -122,20 +122,8 @@ class LoginPageState extends State<LoginPage> {
               child: Center(
                 child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.8,
-                    height: MediaQuery.of(context).size.height * 0.6,
+                    height: MediaQuery.of(context).size.height * 0.8,
                     child: Row(children: <Widget>[
-                      Expanded(
-                          child: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 24.0),
-                              decoration: kContainerDecoration.copyWith(
-                                  color: Theme.of(context).cardColor),
-                              margin: const EdgeInsets.only(right: 20),
-                              child: Center(
-                                  child: Text('Welcome to kCal Control',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineLarge)))),
                       Expanded(
                         child: Form(
                           key: _formKey,
@@ -180,29 +168,19 @@ class LoginPageState extends State<LoginPage> {
                                     ),
                                     const SizedBox(height: 10),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Checkbox(
-                                              value: _rememberMe,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  _rememberMe = value!;
-                                                });
-                                              },
-                                            ),
-                                            const Text('Remember me'),
-                                          ],
+                                        Checkbox(
+                                          value: _rememberMe,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              _rememberMe = value!;
+                                            });
+                                          },
                                         ),
-                                        TextButton(
-                                          onPressed: () {},
-                                          child: const Text('Forgot password?'),
-                                        ),
+                                        const Text('Remember me'),
                                       ],
                                     ),
-                                    const SizedBox(height: 20),
+                                    const SizedBox(height: 10),
                                     ElevatedButton(
                                       onPressed: () {
                                         _login();
@@ -211,7 +189,7 @@ class LoginPageState extends State<LoginPage> {
                                         backgroundColor:
                                             Theme.of(context).splashColor,
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 40, vertical: 15),
+                                            horizontal: 40, vertical: 5),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10.0),
@@ -219,7 +197,7 @@ class LoginPageState extends State<LoginPage> {
                                       ),
                                       child: const Text('Sign In'),
                                     ),
-                                    const SizedBox(height: 20),
+                                    const SizedBox(height: 10),
                                     TextButton(
                                       onPressed: () {
                                         Navigator.push(
@@ -228,8 +206,8 @@ class LoginPageState extends State<LoginPage> {
                                             pageBuilder: (context, animation1,
                                                     animation2) =>
                                                 const SignUpPage(),
-                                            transitionDuration:
-                                                const Duration(milliseconds: 300),
+                                            transitionDuration: const Duration(
+                                                milliseconds: 300),
                                             transitionsBuilder: (context,
                                                 animation, animation2, child) {
                                               final offsetAnimation =
@@ -245,21 +223,33 @@ class LoginPageState extends State<LoginPage> {
                                           ),
                                         );
                                       },
-                                      child: const Text('New User? Sign Up'),
+                                      child: Column(
+                                        children: [
+                                          const Text('New User? Sign Up '),
+                                          TextButton(
+                                            onPressed: () {},
+                                            child:
+                                                const Text('Forgot password?'),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    const SizedBox(height: 20),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: <Widget>[
                                         TextButton(
                                           onPressed: () {},
-                                          child:
-                                              const Text('Terms and Conditions'),
+                                          child: Text(
+                                              style: Theme.of(context).textTheme.labelSmall,
+                                              'Terms and Conditions'),
                                         ),
                                         const Text('|'),
                                         TextButton(
                                           onPressed: () {},
-                                          child: const Text('Privacy Policy'),
+                                          child: Text(
+                                            style: Theme.of(context).textTheme.labelSmall,
+                                              'Privacy Policy'),
                                         ),
                                       ],
                                     ),
