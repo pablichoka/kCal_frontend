@@ -49,7 +49,7 @@ class IndexDesktopCarouselState extends State<IndexDesktopCarousel> {
             },
           ),
           itemCount: 4,
-          itemExtent: MediaQuery.of(context).size.width * 0.8,
+          itemExtent: MediaQuery.of(context).size.width * 0.6,
           center: true,
           anchor: 0.0,
           velocityFactor: 0.3,

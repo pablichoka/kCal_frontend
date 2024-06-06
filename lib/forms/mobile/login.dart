@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:kcal_control_frontend/forms/signup.dart';
 import 'package:kcal_control_frontend/services/api_service.dart' as api;
 
-import '../models/logged_user.dart';
-import '../pages/dashboard.dart';
-import '../themes/theme_data.dart';
-import '../widgets/common/app_bar.dart';
-import '../widgets/desktop/background_index.dart';
+import '../../models/logged_user.dart';
+import '../../pages/dashboard.dart';
+import '../../themes/theme_data.dart';
+import '../../widgets/common/app_bar.dart';
+import '../../widgets/desktop/background_index.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

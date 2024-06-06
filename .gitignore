@@ -93,3 +93,7 @@ app.*.symbols
 !.vscode/extensions.json
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter,dart,androidstudio,visualstudiocode
+
+/linux/
+/macOS/
+/windows/

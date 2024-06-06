@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kcal_control_frontend/forms/desktop/login.dart';
 
-import '../../forms/login.dart';
+import '../../forms/mobile/login.dart';
 import '../../forms/signup.dart';
 import '../../themes/theme_data.dart';
 import '../../widgets/common/app_bar.dart';
@@ -51,20 +52,39 @@ Scaffold desktopIndex(BuildContext context) {
       ],
     ),
     body: Stack(
-      children: <Widget>[
+      children: [
         const BackgroundScreen(),
-        Column(
-          children: <Widget>[
-            SizedBox(
-                height: MediaQuery.of(context).size.height * 0.20,
-                child: Center(
-                  child: Text('Welcome to kCal Control',
-                      style: Theme.of(context).textTheme.headlineLarge),
-                )),
-            SizedBox(
-                width: MediaQuery.of(context).size.width * 0.80,
-                height: MediaQuery.of(context).size.height * 0.40,
-                child: IndexDesktopCarousel(context))
+        Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.20,
+                      width: MediaQuery.of(context).size.width * 0.50,
+                      child: Center(
+                        child: Text('Welcome to kCal Control',
+                            style: Theme.of(context).textTheme.headlineLarge),
+                      )),
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.60,
+                      height: MediaQuery.of(context).size.height * 0.40,
+                      child: IndexDesktopCarousel(context))
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+              child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.transparent,
+                  ),
+                  width: MediaQuery.of(context).size.width * 0.30,
+                  height: MediaQuery.of(context).size.height * 0.60,
+                  child: const LoginForm()),
+            ),
           ],
         ),
       ],
